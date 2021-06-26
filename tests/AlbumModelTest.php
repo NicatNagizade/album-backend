@@ -21,6 +21,5 @@ class AlbumModelTest extends TestCase
     {
         $albums = $this->model->withPhotos();
         $this->assertInstanceOf(Collection::class, $albums);
-        dd($albums);
     }
 }
