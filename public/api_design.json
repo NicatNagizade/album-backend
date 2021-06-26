@@ -1,0 +1,262 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "beatdata",
+        "version": "1.0",
+        "description": "Beatdata",
+        "contact": {
+            "name": "Nijat Naghizada",
+            "email": "nicatnagizader53@gmail.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "localhost"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Album"
+        }
+    ],
+    "paths": {
+        "/album": {
+            "get": {
+                "summary": "get albums and photos (filter by user id)",
+                "tags": [
+                    "Album"
+                ],
+                "operationId": "get-album",
+                "description": "get albums and photos (filter by user id)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album-with-photos"
+                                },
+                                "examples": {
+                                    "example-1": {
+                                        "value": [
+                                            {
+                                                "userId": 10,
+                                                "id": 91,
+                                                "title": "repellendus praesentium debitis officiis",
+                                                "photos": [
+                                                    {
+                                                        "albumId": 91,
+                                                        "id": 4501,
+                                                        "title": "adipisci consequuntur facilis doloremque dolor eveniet eius eos quo",
+                                                        "url": "https://via.placeholder.com/600/71f4a0",
+                                                        "thumbnailUrl": "https://via.placeholder.com/150/71f4a0"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    }
+                },
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "query",
+                        "name": "userId",
+                        "description": "filter by user id"
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Album-with-photos": {
+                "type": "array",
+                "description": "Album-with-photos",
+                "minItems": 1,
+                "uniqueItems": true,
+                "x-examples": {
+                    "example-1": [
+                        {
+                            "userId": 10,
+                            "id": 91,
+                            "title": "repellendus praesentium debitis officiis",
+                            "photos": [
+                                {
+                                    "albumId": 91,
+                                    "id": 4501,
+                                    "title": "adipisci consequuntur facilis doloremque dolor eveniet eius eos quo",
+                                    "url": "https://via.placeholder.com/600/71f4a0",
+                                    "thumbnailUrl": "https://via.placeholder.com/150/71f4a0"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "title": "Album-with-photos",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "userId": {
+                            "type": "number"
+                        },
+                        "id": {
+                            "type": "number"
+                        },
+                        "title": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "photos": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "minItems": 1,
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "albumId": {
+                                        "type": "number"
+                                    },
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "format": "uri"
+                                    },
+                                    "thumbnailUrl": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "format": "uri"
+                                    }
+                                },
+                                "required": [
+                                    "albumId",
+                                    "id",
+                                    "title",
+                                    "url",
+                                    "thumbnailUrl"
+                                ]
+                            }
+                        }
+                    },
+                    "required": [
+                        "userId",
+                        "id",
+                        "title",
+                        "photos"
+                    ]
+                }
+            }
+        },
+        "securitySchemes": {
+            "token": {
+                "name": "Authorization",
+                "type": "apiKey",
+                "in": "header"
+            }
+        },
+        "responses": {
+            "404": {
+                "description": "Not Found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "example-1": {
+                                "value": {
+                                    "message": "404 Not Found",
+                                    "errors": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "",
+                            "type": "object",
+                            "x-examples": {
+                                "example-1": {
+                                    "message": "The given data was invalid.",
+                                    "errors": {
+                                        "userId": [
+                                            "The user id must be an integer."
+                                        ]
+                                    }
+                                }
+                            },
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "required": [
+                                        "parameter"
+                                    ],
+                                    "properties": {
+                                        "parameter": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "errors"
+                            ]
+                        },
+                        "examples": {
+                            "example-1": {
+                                "value": {
+                                    "message": "The given data was invalid.",
+                                    "errors": {
+                                        "parameter": [
+                                            "The parameter must be an integer."
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
