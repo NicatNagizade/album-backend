@@ -1,5 +1,7 @@
 <?php
 
+define('LUMEN_START', microtime(true));
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -80,6 +82,7 @@ $app->routeMiddleware([
     // 'auth' => App\Http\Middleware\Authenticate::class,
     'cors' => App\Http\Middleware\CorsMiddleware::class,
     'audit.log' => App\Http\Middleware\AuditLogMiddleware::class,
+    'daily.log' => App\Http\Middleware\DailyLogMiddleware::class,
 ]);
 
 /*
