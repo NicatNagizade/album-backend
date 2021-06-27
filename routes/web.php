@@ -18,6 +18,13 @@ $router->get('/', function () {
     return view('swagger');
 });
 
-$router->group(['prefix' => 'api', 'middleware' => ['cors', 'audit.log']], function($router) {
+$router->group([
+    'prefix' => 'api',
+    'middleware' => [
+        'cors',
+        'audit.log',
+        'daily.log'
+    ]
+], function ($router) {
     $router->get('album', 'AlbumController@index');
 });
