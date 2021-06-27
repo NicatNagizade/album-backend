@@ -17,6 +17,8 @@ class CreateAuditLogsTable extends Migration
             $table->id();
             $table->string('endpoint');
             $table->string('method');
+            $table->unsignedSmallInteger('status');
+            $table->decimal('response_time', 5, 2, true);
             $table->ipAddress('ip')->nullable();
             $table->text('payload')->nullable();
             $table->text('header')->nullable();
