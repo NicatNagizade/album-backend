@@ -13,7 +13,7 @@ class DailyLogMiddleware
     {
         $response = $next($request);
         if ($this->checkSize()) {
-            $data = $this->calls($request, $response);
+            $data = $this->call($request, $response);
             $log = Log::channel('daily');
             $log->info($data);
         }
@@ -37,7 +37,7 @@ class DailyLogMiddleware
         return true;
     }
 
-    protected function calls($request, $response): array
+    protected function call($request, $response): array
     {
         return [
             'ip' => $request->ip(),
